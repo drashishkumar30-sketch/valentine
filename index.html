@@ -5,89 +5,110 @@
 <title>For Yukti 💖</title>
 
 <style>
-body{
-  height:100vh;
-  margin:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:#ffe6ea;
-  font-family:Arial, sans-serif;
-  overflow:hidden;
-}
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #ffe6eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
 
-.box{
-  background:white;
-  padding:30px;
-  border-radius:20px;
-  text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.2);
-}
+  .card {
+    background: white;
+    padding: 30px 25px;
+    border-radius: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 340px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  }
 
-h1{
-  color:#ff4d6d;
-  margin-bottom:25px;
-}
+  h2 {
+    color: #ff4d6d;
+    margin-bottom: 25px;
+  }
 
-#yes{
-  padding:16px 40px;
-  font-size:22px;
-  border:none;
-  border-radius:30px;
-  background:#ff4d6d;
-  color:white;
-  cursor:pointer;
-}
+  button {
+    border: none;
+    padding: 14px 28px;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+  }
 
-#no{
-  padding:8px 16px;
-  font-size:14px;
-  border:none;
-  border-radius:20px;
-  background:#ccc;
-  position:absolute;
-  cursor:pointer;
-}
-img{
-  width:250px;
-  margin-top:20px;
-}
+  #yes {
+    background: #ff4d6d;
+    color: white;
+    font-size: 18px;
+  }
+
+  #no {
+    background: #ddd;
+    color: #333;
+    font-size: 12px;
+    position: absolute;
+  }
+
+  .buttons {
+    position: relative;
+    height: 80px;
+  }
+
+  img {
+    width: 260px;
+    border-radius: 20px;
+    margin-top: 20px;
+  }
 </style>
 </head>
 
 <body>
 
-<div class="box" id="card">
-  <h1>Yukti Kotak,<br>will you be my Valentine? 💕</h1>
-  <button id="yes">YES 💖</button>
-</div>
+<div class="card" id="card">
+  <h2>Yukti Kotak,<br>will you be my Valentine? 💕</h2>
 
-<button id="no">no</button>
+  <div class="buttons">
+    <button id="yes">YES 💖</button>
+    <button id="no">no</button>
+  </div>
+</div>
 
 <script>
   const noBtn = document.getElementById("no");
+  const yesBtn = document.getElementById("yes");
+  const card = document.getElementById("card");
+
+  // NO runs away (works on phone + laptop)
+  noBtn.addEventListener("touchstart", moveNo);
+  noBtn.addEventListener("mouseover", moveNo);
 
   function moveNo() {
-    const x = Math.random() * (window.innerWidth - 120);
-    const y = Math.random() * (window.innerHeight - 120);
-    noBtn.style.position = "absolute";
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 100);
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
   }
 
-  noBtn.addEventListener("mouseover", moveNo);   // laptop
-  noBtn.addEventListener("touchstart", moveNo);  // phone
-</
-script>
-
-
-  document.body.innerHTML = `
-    <div class="box">
-      <h1>YESSSSS!!! 🎉💘</h1>
-      <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif">
-    </div>
-  `;
-};
+  // YES result (clean reset)
+  yesBtn.onclick = () => {
+    document.body.innerHTML = `
+      <div style="
+        height:100vh;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        background:#ffe6eb;
+        text-align:center;
+      ">
+        <h1 style="color:#ff4d6d;">YESSSSS!!! 🎉💖</h1>
+        <img src="https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif">
+      </div>
+    `;
+  };
 </script>
 
 </body>
