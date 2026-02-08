@@ -1,1 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Just a Question</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(circle at top,#ffeef6,#ffd6e7);
+  font-family:system-ui,sans-serif;
+  padding:16px;
+  overflow:hidden;
+}
+.card{
+  width:min(720px,92vw);
+  background:#ffffffcc;
+  padding:28px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 18px 60px rgba(0,0,0,.15);
+}
+.art{
+  width:420px;
+  margin:0 auto 12px;
+  display:block;
+}
+.bounce{
+  animation:bounce .8s ease infinite alternate;
+}
+@keyframes bounce{
+  from{transform:translateY(0)}
+  to{transform:translateY(-16px)}
+}
+h1{
+  font-size:clamp(22px,4vw,38px);
+  min-height:3em;
+}
+.zone{
+  position:relative;
+  height:130px;
+  margin-top:16px;
+}
+button{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(0,0,0,.14);
+}
+.yes{
+  left:12%;
+  padding:22px 44px;
+  font-size:21px;
+  font-weight:800;
+  background:#ff3b7a;
+  color:#fff;
+}
+.no{
+  left:62%;
+  padding:10px 18px;
+  font-size:14px;
+  background:#e5e7eb;
+}
+.hint{
+  font-size:13px;
+  opacity:.7;
+  margin-top:6px;
+}
+.sticker{
+  width:160px;
+  margin:18px auto;
+  display:none;
+  border-radius:16px;
+}
+.result{
+  display:none;
+  margin-top:16px;
+}
+#confetti{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9999;
+}
+</style>
+</head>
+
+<body>
+<canvas id="confetti"></canvas>
+
+<div class="card">
+
+<!-- TEDDY -->
+<svg class="art bounce" viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg">
+  <path d="M150 60 C150 40 180 40 180 65
+           C180 95 150 105 150 120
+           C150 105 120 95 120 65
+           C120 40 150 40 150 60Z" fill="#ff4d7d"/>
+  <circle cx="150" cy="155" r="70" fill="#d2a679"/>
+  <circle cx="105" cy="105" r="24" fill="#d2a679"/>
+  <circle cx="195" cy="105" r="24" fill="#d2a679"/>
+  <circle cx="135" cy="150" r="5"/>
+  <circle cx="165" cy="150" r="5"/>
+  <circle cx="150" cy="165" r="6" fill="#5b3a1e"/>
+  <path d="M138 175 Q150 185 162 175"
+        stroke="#5b3a1e" stroke-width="3" fill="none"/>
+</svg>
+
+<h1 id="text">Hey Yukti… how are you?</h1>
+
+<img src="baby.jpg" id="baby" class="sticker">
+<img src="smile.jpg" id="smile" class="sticker">
+
+<div class="zone" id="zone">
+  <button class="yes" id="yesBtn">Fine</button>
+  <button class="no" id="noBtn">Not fine</button>
+</div>
+
+<div class="hint" id="hint">The other option seems a bit shy 😏</div>
+
+<div class="result" id="result">
+  <h2>YAY! Maaru baby 😌✨<br>Wallah habibi, good choice 💛</h2>
+  <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" width="260">
+</div>
+
+</div>
+
+<script>
+const text = document.getElementById("text");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const zone = document.getElementById("zone");
+const hint = document.getElementById("hint");
+const baby = document.getElementById("baby");
+const smile = document.getElementById("smile");
+const result = document.getElementById("result");
+
+const steps = [
+  ["Hey Yukti… how are you?","Fine","Not fine"],
+  ["Can I make it better?","Maybe","Try"],
+  ["Will you be my Valentine?","Yes","Let’s see"],
+  ["Are you sure?","Yes","No"],
+  ["Soch lo… last chance 😌"],
+  ["Achi baat hai ki aap sure ho, huh 😌"],
+  ["Alright, it’s time for me to smile"],
+  ["One last time…\nMrs. Yukti Kotak, will you be my Valentine?","Haanji baby","Akcueiwjsoqkw"]
+];
+
+const teasing = [
+  "You didn’t even hesitate 👀",
+  "That confidence is kinda dangerous 😏",
+  "Okay okay… I see you 😌",
+  "Now I’m smiling for real."
+];
+
+let step = 0;
+
+function next(){
+  step++;
+  if(step >= steps.length) return;
+
+  text.innerText = steps[step][0];
+
+  baby.style.display = "none";
+  smile.style.display = "none";
+
+  if(step === 2) baby.style.display = "block";
+  if(step === 6) smile.style.display = "block";
+
+  if(steps[step].length > 1){
+    zone.style.display = "block";
+    yesBtn.innerText = steps[step][1];
+    noBtn.innerText = steps[step][2];
+    return;
+  }
+
+  zone.style.display = "none";
+
+  if(step === 4){
+    setTimeout(next,2000);
+    return;
+  }
+
+  if(step === 5){
+    setTimeout(startTeasing,2000);
+  }
+}
+
+function startTeasing(){
+  let i = 0;
+  const timer = setInterval(()=>{
+    if(i < teasing.length){
+      text.innerText = teasing[i++];
+    } else {
+      clearInterval(timer);
+      next();
+    }
+  },2000);
+}
+
+yesBtn.onclick = () => {
+  if(step === steps.length - 1) finish();
+  else next();
+};
+
+noBtn.onclick = () => {
+  if(step === steps.length - 1) finish();
+  else next();
+};
+
+zone.addEventListener("pointermove", e=>{
+  const b = noBtn.getBoundingClientRect();
+  const d = Math.hypot(
+    (b.left+b.width/2)-e.clientX,
+    (b.top+b.height/2)-e.clientY
+  );
+  if(d < 140){
+    noBtn.style.left = Math.random()*60 + "%";
+  }
+});
+
+const confettiFx = confetti.create(document.getElementById("confetti"),{resize:true});
+
+function finish(){
+  zone.style.display="none";
+  hint.style.display="none";
+  result.style.display="block";
+
+  const end = Date.now() + 3000;
+  (function fire(){
+    confettiFx({
+      particleCount:18,
+      spread:140,
+      startVelocity:55,
+      ticks:220,
+      gravity:0.9,
+      shapes:["heart"],
+      colors:["#ff4d7d","#ffd1e8","#ffffff"],
+      origin:{x:Math.random(),y:Math.random()*0.6}
+    });
+    if(Date.now() < end) requestAnimationFrame(fire);
+  })();
+}
+</script>
+
+</body>
+</html>
 
